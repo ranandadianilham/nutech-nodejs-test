@@ -9,6 +9,7 @@ const UserTransaction = require("./src/models/transactionHistory.model");
 const Banner = require("./src/models/banner.model");
 const Services = require("./src/models/services.model");
 
+const authRoutes = require('./src/routes/auth.route')
 
 require("dotenv").config();
 
@@ -17,8 +18,10 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
+app.use('/api/auth', authRoutes)
+
 sequelize
-  .sync({force: true})
+  .sync({force: false})
   .then(() => {
     console.log("Tables synchronized successfully");
     app.listen(PORT, () => {
