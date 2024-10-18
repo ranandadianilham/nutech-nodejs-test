@@ -10,7 +10,7 @@ const Banner = require("./src/models/banner.model");
 const Services = require("./src/models/services.model");
 
 const authRoutes = require('./src/routes/auth.route')
-
+const profileRoutes = require('./src/routes/profile.route')
 require("dotenv").config();
 
 const app = express();
@@ -19,6 +19,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 app.use('/api/auth', authRoutes)
+app.use('/profile', profileRoutes)
 
 sequelize
   .sync({force: false})
