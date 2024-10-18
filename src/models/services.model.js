@@ -1,39 +1,46 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../configs/mysql.db");
 
-const User = sequelize.define(
-  "User",
+const Services = sequelize.define(
+  "services",
   {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
-    email: {
+    serviceName: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
-      validate: {
-        isEmail: true,
-      },
+      field: "service_name",
     },
-    password: {
+    serviceCode: {
       type: DataTypes.STRING,
+      allowNull: false,
+      field: "service_code",
+    },
+    serviceIcon: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      field: "service_icon",
+    },
+    serviceTarif: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     createdAt: {
       type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW, // SQL default timestamp
+      defaultValue: DataTypes.NOW,
     },
     updatedAt: {
       type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW, // Initialized with current time
+      defaultValue: DataTypes.NOW,
     },
   },
   {
-    freezeTableName: true,
     timestamps: true,
+    freezeTableName: true,
   }
 );
 
-module.exports  = User
+module.exports = Services

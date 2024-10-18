@@ -1,9 +1,9 @@
-const { DataTypes, UUIDV4 } = require("sequelize");
+const { DataTypes } = require("sequelize");
 const { sequelize } = require("../configs/mysql.db");
 const User = require("./user.model");
 
-const UserProfile = sequelize.define(
-  "user_profile",
+const UserTransaction = sequelize.define(
+  "user_transaction",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -20,21 +20,34 @@ const UserProfile = sequelize.define(
       },
       onDelete: "CASCADE",
     },
-    firstName: {
+    invoice_number: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
+      validate: {
+        len: [1, 50], // Optional: restrict length
+      },
     },
-    lastName: {
-      type: DataTypes.STRING,
+    transaction_type: {
+      type: DataTypes.ENUM("TOPUP", "WITHDRAWAL", "PURCHASE"),
       allowNull: false,
     },
-    profileImage: {
+    description: {
       type: DataTypes.STRING,
       allowNull: true,
+    },
+    total_amount: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+      validate: {
+        min: 0,
+      },
     },
     createdAt: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW, // SQL default timestamp
+      field: "created_on",
     },
     updatedAt: {
       type: DataTypes.DATE,
@@ -46,8 +59,7 @@ const UserProfile = sequelize.define(
     freezeTableName: true,
   }
 );
+User.hasMany(UserTransaction, { foreignKey: "userId" });
+UserTransaction.belongsTo(User, { foreignKey: "userId" });
 
-User.hasMany(UserProfile, { foreignKey: "userId" });
-UserProfile.belongsTo(User, { foreignKey: "userId" });
-
-module.exports = UserProfile;
+module.exports = UserTransaction;

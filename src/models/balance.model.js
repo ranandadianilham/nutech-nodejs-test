@@ -1,25 +1,29 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../configs/mysql.db");
+const User = require("./user.model");
 
-const User = sequelize.define(
-  "User",
+const UserBalance = sequelize.define(
+  "user_balance",
   {
     id: {
       type: DataTypes.INTEGER,
-      autoIncrement: true,
       primaryKey: true,
+      autoIncrement: true,
     },
-    email: {
-      type: DataTypes.STRING,
+    userId: {
+      // from user table
+      type: DataTypes.INTEGER,
       allowNull: false,
-      unique: true,
-      validate: {
-        isEmail: true,
+      references: {
+        model: User,
+        key: "id",
       },
+      onDelete: "CASCADE",
     },
-    password: {
-      type: DataTypes.STRING,
+    balance: {
+      type: DataTypes.INTEGER,
       allowNull: false,
+      defaultValue: 0,
     },
     createdAt: {
       type: DataTypes.DATE,
@@ -31,9 +35,12 @@ const User = sequelize.define(
     },
   },
   {
-    freezeTableName: true,
     timestamps: true,
+    freezeTableName: true,
   }
 );
 
-module.exports  = User
+User.hasMany(UserBalance, { foreignKey: "userId" });
+UserBalance.belongsTo(User, { foreignKey: "userId" });
+
+module.exports = UserBalance;
