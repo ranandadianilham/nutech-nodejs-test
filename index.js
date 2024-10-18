@@ -11,6 +11,7 @@ const Services = require("./src/models/services.model");
 
 const authRoutes = require('./src/routes/auth.route')
 const profileRoutes = require('./src/routes/profile.route')
+const transactionRoutes = require('./src/routes/transaction.route')
 require("dotenv").config();
 
 const app = express();
@@ -20,6 +21,7 @@ app.use(express.json());
 
 app.use('/api/auth', authRoutes)
 app.use('/profile', profileRoutes)
+app.use('/', transactionRoutes)
 
 sequelize
   .sync({force: false})
