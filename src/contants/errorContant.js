@@ -34,7 +34,7 @@ const ErrorConfig = {
     errorCode: "ERR_VALIDATION_400",
   },
   [ErrorType.UNAUTHORIZED]: {
-    message: "Silakan login terlebih dahulu",
+    message: "Token tidak tidak valid atau kadaluwarsa",
     code: HttpStatus.UNAUTHORIZED,
     errorCode: "ERR_AUTH_401",
   },

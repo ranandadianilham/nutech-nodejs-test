@@ -15,7 +15,7 @@ const { ErrorConfig, ErrorType } = require("../contants/errorContant");
 
 exports.profile = async (req, res) => {
   /* get id by jwt token */
-  const id = req.id;
+  const id = req.user.id;
   try {
     const [profile] = await sequelize.query(
       "SELECT u.email as email, up.firstName as first_name, up.lastName as last_name, up.profileImage as profile_image from user_profile up left join `user` u on u.id = up.userId where u.id = :id",
@@ -110,7 +110,7 @@ const updateProfileImage = async (id, profileImage) => {
 
 exports.update = async (req, res) => {
   const { first_name: firstName, last_name: lastName } = req.body;
-  const id = req.id;
+  const id = req.user.id;
 
   try {
     const data = await updateProfile(id, firstName, lastName);
@@ -125,7 +125,7 @@ exports.update = async (req, res) => {
 };
 
 exports.updateImage = async (req, res) => {
-  const id = req.id;
+  const id = req.user.id;
 
   try {
     if (!req.file) {

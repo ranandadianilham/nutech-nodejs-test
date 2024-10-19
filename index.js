@@ -13,6 +13,7 @@ const authRoutes = require("./src/routes/auth.route");
 const profileRoutes = require("./src/routes/profile.route");
 const transactionRoutes = require("./src/routes/transaction.route");
 const informationRoutes = require("./src/routes/information.route");
+const authenticate = require("./src/middlewares/auth.middleware");
 
 require("dotenv").config();
 
@@ -20,18 +21,13 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
-
-app.use("/api/auth", authRoutes);
-app.use("/profile", profileRoutes);
-app.use(
-  "/",
-  (req, res, next) => {
-    req.id = 1;
-    next();
-  },
-  transactionRoutes
-);
+app.use(authenticate.authenticateToken)
+app.use("/", authRoutes);
+app.use("/profile",  profileRoutes);
+app.use("/", transactionRoutes);
 app.use("/", informationRoutes);
+
+
 sequelize
   .sync({ force: false })
   .then(() => {

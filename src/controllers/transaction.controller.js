@@ -122,7 +122,7 @@ VALUES( '', '', '', 0, '', );)
 };
 
 exports.balance = async (req, res) => {
-  const id = req.id;
+  const id = req.user.id;
 
   try {
     const [balance] = await sequelize.query(
@@ -152,7 +152,7 @@ exports.balance = async (req, res) => {
 // when making top up count as transaction
 // query transaction_type = TOPUP
 exports.topup = async (req, res) => {
-  const id = req.id;
+  const id = req.user.id;
   const { top_up_amount } = req.body;
   try {
     const data = await topUpQuery(top_up_amount, id);
@@ -177,7 +177,7 @@ exports.topup = async (req, res) => {
 };
 
 exports.transaction = async (req, res) => {
-  const id = req.id;
+  const id = req.user.id;
   const { service_code } = req.body;
 
   if (service_code === "TOPUP") {
@@ -208,7 +208,7 @@ exports.history = async (req, res) => {
   /* get transaction history */
   const offset = Number(req.query.offset);
   const limit = Number(req.query.limit);
-  const id = req.id;
+  const id = req.user.id;
   try {
     const user_transaction = await sequelize.query(
       "select invoice_number, transaction_type, description, total_amount, created_on from user_transaction where userId = :id limit :limit offset :offset",
