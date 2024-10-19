@@ -1,7 +1,7 @@
 const { Sequelize } = require("sequelize");
 require("dotenv").config();
 
-const sequelize = new Sequelize(
+/* const sequelize = new Sequelize(
   process.env.MYSQL_DB,
   process.env.MYSQL_USER,
   process.env.MYSQL_PASS,
@@ -11,7 +11,18 @@ const sequelize = new Sequelize(
     port: process.env.MYSQL_PORT,
     logging: false,
   }
-);
+); */
+
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+  dialect: 'mysql',
+  logging: false, // Adjust logging level as needed
+  pool: {
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000,
+  },
+});
 
 async function connectToDB() {
   try {
