@@ -14,13 +14,16 @@ const profileRoutes = require("./src/routes/profile.route");
 const transactionRoutes = require("./src/routes/transaction.route");
 const informationRoutes = require("./src/routes/information.route");
 const authenticate = require("./src/middlewares/auth.middleware");
-
+const { default: helmet } = require("helmet");
+const cors = require('cors')
 require("dotenv").config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use(cors())
+app.use(helmet())
 app.use(authenticate.authenticateToken)
 app.use("/", authRoutes);
 app.use("/profile",  profileRoutes);
