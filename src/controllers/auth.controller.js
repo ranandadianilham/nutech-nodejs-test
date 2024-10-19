@@ -31,7 +31,7 @@ exports.register = async (req, res) => {
     const t = await sequelize.transaction();
     try {
       await sequelize.query(
-        "INSERT INTO user (email, password) VALUES( :email, :password)",
+        "INSERT INTO user (email, password,createdAt) VALUES( :email, :password, now())",
         {
           replacements: {
             email,
@@ -51,7 +51,7 @@ exports.register = async (req, res) => {
       );
 
       await sequelize.query(
-        "INSERT INTO user_profile (userId, firstName, lastName) VALUES(:userId, :firstName, :lastName)",
+        "INSERT INTO user_profile (userId, firstName, lastName, createdAt) VALUES(:userId, :firstName, :lastName, now())",
         {
           replacements: {
             userId: userInserted[0].id,
@@ -63,7 +63,7 @@ exports.register = async (req, res) => {
       );
 
       await sequelize.query(
-        "INSERT INTO user_balance (userId, balance) VALUES( :userId, :balance)",
+        "INSERT INTO user_balance (userId, balance, createdAt) VALUES( :userId, :balance, now())",
         {
           replacements: { userId: userInserted[0].id, balance: 0 },
           transaction: t,

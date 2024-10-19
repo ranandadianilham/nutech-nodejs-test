@@ -4,8 +4,8 @@ const router = express.Router();
 
 
 router.get('/balance', transactionController.balance)
-router.get('/topup', transactionController.topup)
-router.post('transaction', transactionController.transaction)
+router.post('/topup', transactionController.topup)
+router.post('/transaction', transactionController.transaction)
 router.get('/transaction/history', transactionController.history)
 
 module.exports = router;

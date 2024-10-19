@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 const { sequelize } = require("../configs/mysql.db");
 
 const Banner = sequelize.define(
-  "Banner",
+  "Banners",
   {
     id: {
       type: DataTypes.INTEGER,

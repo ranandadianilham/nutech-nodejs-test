@@ -24,9 +24,10 @@ const Services = sequelize.define(
       allowNull: false,
       field: "service_icon",
     },
-    serviceTarif: {
+    serviceTariff: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      field: "service_tariff",
     },
     createdAt: {
       type: DataTypes.DATE,

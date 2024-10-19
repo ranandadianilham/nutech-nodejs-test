@@ -29,7 +29,7 @@ const UserTransaction = sequelize.define(
       },
     },
     transaction_type: {
-      type: DataTypes.ENUM("TOPUP", "WITHDRAWAL", "PURCHASE"),
+      type: DataTypes.STRING,
       allowNull: false,
     },
     description: {
