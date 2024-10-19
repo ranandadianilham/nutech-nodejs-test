@@ -206,15 +206,17 @@ exports.transaction = async (req, res) => {
 
 exports.history = async (req, res) => {
   /* get transaction history */
-  const { offset, limit } = req.params;
+  const offset = Number(req.query.offset);
+  const limit = Number(req.query.limit);
   const id = req.id;
-
   try {
     const user_transaction = await sequelize.query(
-      "select invoice_number, transaction_type, description, total_amount, created_on from user_transaction where userId = :id",
+      "select invoice_number, transaction_type, description, total_amount, created_on from user_transaction where userId = :id limit :limit offset :offset",
       {
         replacements: {
           id,
+          offset,
+          limit,
         },
         type: QueryTypes.SELECT,
       }
@@ -222,7 +224,11 @@ exports.history = async (req, res) => {
     return res.json({
       status: 0,
       message: "Sukses",
-      data: user_transaction,
+      data: {
+        offset,
+        limit,
+        record: user_transaction,
+      },
     });
   } catch (error) {
     const e =
