@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const { ErrorType, ErrorConfig } = require("../contants/errorContant");
 const {sequelize} = require('./../configs/mysql.db');
 const { QueryTypes } = require("sequelize");
+const { validationResult } = require("express-validator");
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
 const extractToken = (authHeader) => {
   if (!authHeader || !authHeader.startsWith("Bearer")) {
@@ -80,3 +81,11 @@ exports.authenticateToken = async (req, res, next) => {
     });
   }
 };
+
+exports.validateBody = (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  };

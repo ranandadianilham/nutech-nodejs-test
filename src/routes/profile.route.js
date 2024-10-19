@@ -6,10 +6,11 @@ const {
   fileUploadErrorHandler,
 } = require("../middlewares/fileUpload.middleware");
 const { authenticateToken } = require("../middlewares/auth.middleware");
+const { updateProfileRules } = require("../utils/validationRules/profile.rules");
 
 router.get("/", profileController.profile);
 
-router.post("/update",  profileController.update);
+router.post("/update",  updateProfileRules, profileController.update);
 
 router.post(
   "/image",

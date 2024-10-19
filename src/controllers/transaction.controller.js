@@ -2,6 +2,7 @@ const { QueryTypes } = require("sequelize");
 const { sequelize } = require("../configs/mysql.db");
 const { generateInvoiceNumber } = require("../utils/helper");
 const { ErrorType, ErrorConfig } = require("../contants/errorContant");
+const { isNaN } = require("lodash");
 
 const topUpQuery = async (top_up_amount, id) => {
   const t = await sequelize.transaction();
@@ -206,10 +207,15 @@ exports.transaction = async (req, res) => {
 
 exports.history = async (req, res) => {
   /* get transaction history */
-  const offset = Number(req.query.offset);
-  const limit = Number(req.query.limit);
+  const offset = parseInt(req.query.offset);
+  const limit = parseInt(req.query.limit);
   const id = req.user.id;
   try {
+    if (isNaN(offset) || isNaN(limit)) {
+      throw new Error('Offset atau limit tidak valid');
+    }
+
+
     const user_transaction = await sequelize.query(
       "select invoice_number, transaction_type, description, total_amount, created_on from user_transaction where userId = :id limit :limit offset :offset",
       {
