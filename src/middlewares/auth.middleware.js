@@ -70,7 +70,6 @@ exports.authenticateToken = async (req, res, next) => {
     };
     next();
   } catch (error) {
-    console.log("h", error.message);
     const e =
       ErrorConfig[error.message] ??
       ErrorConfig[ErrorType.INTERNAL_SERVER_ERROR];

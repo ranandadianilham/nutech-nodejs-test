@@ -1,8 +1,12 @@
-###  api
+###  nutech test project
+
+railway domain: https://nutech-nodejs-rananda.up.railway.app
+
+github: https://github.com/ranandadianilham/nutech-nodejs-test
 
 - authentication module
     - [x] registration
-    - [ ] login
+    - [x] login
     - [x] profile
     - [x] profile/update
     - [x] profile/image
@@ -11,12 +15,13 @@
     - [x] services
     - [x] banner
 
-- transaction
+- transaction module
     - [x] balance
     - [x] topup
     - [x] transaction
-    - [ ] history
+    - [x] history
 
 - AUTH
-    - [ ] validate request body
-    - [ ] authorization
+    - [x] validate request body
+    - [x] authorization
+    - [x] error handling
