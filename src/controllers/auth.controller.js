@@ -5,7 +5,12 @@ const { QueryTypes } = require("sequelize");
 const JWT_SECRET = process.env.JWT_SECRET;
 
 exports.register = async (req, res) => {
-  const { email, first_name: firstName, last_name: lastName, password } = req.body;
+  const {
+    email,
+    first_name: firstName,
+    last_name: lastName,
+    password,
+  } = req.body;
 
   try {
     const existingUser = await sequelize.query(
@@ -77,6 +82,11 @@ exports.register = async (req, res) => {
 
     res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    const e =
+      ErrorConfig[error.message] ??
+      ErrorConfig[ErrorType.INTERNAL_SERVER_ERROR];
+    return res.status(e.code).json({
+      message: e.message,
+    });
   }
 };
