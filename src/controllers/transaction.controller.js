@@ -33,55 +33,7 @@ const topUpQuery = async (top_up_amount, id) => {
   }
 };
 
-exports.balance = async (req, res) => {
-  const id = req.id;
-
-  try {
-    const [balance] = await sequelize.query(
-      "select balance from user_balance where userId = :id",
-      {
-        replacements: {
-          id,
-        },
-        type: QueryTypes.SELECT,
-      }
-    );
-    return res.status(200).json({
-      status: 0,
-      message: "Get Balance Berhasil",
-      data: balance,
-    });
-  } catch (error) {
-    const e =
-      ErrorConfig[error.message] ?? ErrorConfig[ErrorType.INTERNAL_SERVER_ERROR];
-    return res.status(e.code).json({
-      message: e.message,
-    });
-  }
-};
-
-// when making top up count as transaction
-// query transaction_type = TOPUP
-exports.topup = async (req, res) => {
-  const id = req.id;
-  const { top_up_amount } = req.body;
-  try {
-    const data = await topUpQuery(top_up_amount, id);
-    return res.status(200).json({
-      status: 0,
-      message: "Top up Berhasil",
-      data,
-    });
-  } catch (error) {
-    const e =
-      ErrorConfig[error.message] ?? ErrorConfig[ErrorType.INTERNAL_SERVER_ERROR];
-    return res.status(e.code).json({
-      message: e.message,
-    });
-  }
-};
-
-const createTransaction = async (userId, service_code) => {
+const createTransaction = async (userId, service_code, topupAmount = 0) => {
   const t = await sequelize.transaction();
 
   try {
@@ -117,6 +69,10 @@ VALUES( '', '', '', 0, '', );)
     );
     if (!services) {
       throw new Error(ErrorType.SERVICE_NOT_FOUND);
+    }
+
+    if (services.service_code === "TOPUP") {
+      services.service_tariff = topupAmount;
     }
 
     if (user_balance.balance < services.service_tariff) {
@@ -165,9 +121,71 @@ VALUES( '', '', '', 0, '', );)
   }
 };
 
+exports.balance = async (req, res) => {
+  const id = req.id;
+
+  try {
+    const [balance] = await sequelize.query(
+      "select balance from user_balance where userId = :id",
+      {
+        replacements: {
+          id,
+        },
+        type: QueryTypes.SELECT,
+      }
+    );
+    return res.status(200).json({
+      status: 0,
+      message: "Get Balance Berhasil",
+      data: balance,
+    });
+  } catch (error) {
+    const e =
+      ErrorConfig[error.message] ??
+      ErrorConfig[ErrorType.INTERNAL_SERVER_ERROR];
+    return res.status(e.code).json({
+      message: e.message,
+    });
+  }
+};
+
+// when making top up count as transaction
+// query transaction_type = TOPUP
+exports.topup = async (req, res) => {
+  const id = req.id;
+  const { top_up_amount } = req.body;
+  try {
+    const data = await topUpQuery(top_up_amount, id);
+    const createTransactionTopUp = await createTransaction(
+      id,
+      "TOPUP",
+      top_up_amount
+    );
+    return res.status(200).json({
+      status: 0,
+      message: "Top up Berhasil",
+      data,
+    });
+  } catch (error) {
+    const e =
+      ErrorConfig[error.message] ??
+      ErrorConfig[ErrorType.INTERNAL_SERVER_ERROR];
+    return res.status(e.code).json({
+      message: e.message,
+    });
+  }
+};
+
 exports.transaction = async (req, res) => {
   const id = req.id;
   const { service_code } = req.body;
+
+  if (service_code === "TOPUP") {
+    const e = ErrorConfig[ErrorType.SERVICE_NOT_FOUND];
+    return res.status(e.code).json({
+      message: e.message,
+    });
+  }
 
   try {
     const data = await createTransaction(id, service_code, res);
@@ -178,13 +196,13 @@ exports.transaction = async (req, res) => {
     });
   } catch (error) {
     const e =
-      ErrorConfig[error.message] ?? ErrorConfig[ErrorType.INTERNAL_SERVER_ERROR];
+      ErrorConfig[error.message] ??
+      ErrorConfig[ErrorType.INTERNAL_SERVER_ERROR];
     return res.status(e.code).json({
       message: e.message,
     });
   }
 };
-
 
 exports.history = async (req, res) => {
   /* get transaction history */
@@ -208,7 +226,8 @@ exports.history = async (req, res) => {
     });
   } catch (error) {
     const e =
-      ErrorConfig[error.message] ?? ErrorConfig[ErrorType.INTERNAL_SERVER_ERROR];
+      ErrorConfig[error.message] ??
+      ErrorConfig[ErrorType.INTERNAL_SERVER_ERROR];
     return res.status(e.code).json({
       message: e.message,
     });
