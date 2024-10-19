@@ -1,6 +1,7 @@
 const { QueryTypes } = require("sequelize");
 const { sequelize } = require("../configs/mysql.db");
 const { generateInvoiceNumber } = require("../utils/helper");
+const { ErrorType, ErrorConfig } = require("../contants/errorContant");
 
 const topUpQuery = async (top_up_amount, id) => {
   const t = await sequelize.transaction();
@@ -45,13 +46,17 @@ exports.balance = async (req, res) => {
         type: QueryTypes.SELECT,
       }
     );
-    res.status(200).json({
+    return res.status(200).json({
       status: 0,
       message: "Get Balance Berhasil",
       data: balance,
     });
   } catch (error) {
-    res.status(500).json({ message: "internal status error" });
+    const e =
+      ErrorConfig[error.message] ?? ErrorConfig[ErrorType.INTERNAL_SERVER_ERROR];
+    return res.status(e.code).json({
+      message: e.message,
+    });
   }
 };
 
@@ -62,17 +67,21 @@ exports.topup = async (req, res) => {
   const { top_up_amount } = req.body;
   try {
     const data = await topUpQuery(top_up_amount, id);
-    res.status(200).json({
+    return res.status(200).json({
       status: 0,
       message: "Top up Berhasil",
       data,
     });
   } catch (error) {
-    res.status(500).json({ message: "internal status error" });
+    const e =
+      ErrorConfig[error.message] ?? ErrorConfig[ErrorType.INTERNAL_SERVER_ERROR];
+    return res.status(e.code).json({
+      message: e.message,
+    });
   }
 };
 
-const createTransaction = async (userId, service_code, res) => {
+const createTransaction = async (userId, service_code) => {
   const t = await sequelize.transaction();
 
   try {
@@ -106,17 +115,12 @@ VALUES( '', '', '', 0, '', );)
         transaction: t,
       }
     );
-
     if (!services) {
-      res.status(404).json({
-        message: "service not found",
-      });
+      throw new Error(ErrorType.SERVICE_NOT_FOUND);
     }
 
     if (user_balance.balance < services.service_tariff) {
-      res.status(400).json({
-        message: "saldo kurang",
-      });
+      throw new Error(ErrorType.BALANCE_INSUFFICIENT);
     }
 
     await sequelize.query(
@@ -153,7 +157,7 @@ VALUES( '', '', '', 0, '', );)
         transaction: t,
       }
     );
-    console.log(invoiceNumber,  "😭😭😭😭", result);
+    t.commit();
     return result;
   } catch (error) {
     t.rollback();
@@ -164,14 +168,49 @@ VALUES( '', '', '', 0, '', );)
 exports.transaction = async (req, res) => {
   const id = req.id;
   const { service_code } = req.body;
+
   try {
     const data = await createTransaction(id, service_code, res);
-    res.json({ data });
+    return res.status(200).json({
+      status: 0,
+      message: "Transaksi berhasil",
+      data,
+    });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "internal status error", msg: error.toString() });
+    const e =
+      ErrorConfig[error.message] ?? ErrorConfig[ErrorType.INTERNAL_SERVER_ERROR];
+    return res.status(e.code).json({
+      message: e.message,
+    });
   }
 };
 
-exports.history = async (req, res) => {};
+
+exports.history = async (req, res) => {
+  /* get transaction history */
+  const { offset, limit } = req.params;
+  const id = req.id;
+
+  try {
+    const user_transaction = await sequelize.query(
+      "select invoice_number, transaction_type, description, total_amount, created_on from user_transaction where userId = :id",
+      {
+        replacements: {
+          id,
+        },
+        type: QueryTypes.SELECT,
+      }
+    );
+    return res.json({
+      status: 0,
+      message: "Sukses",
+      data: user_transaction,
+    });
+  } catch (error) {
+    const e =
+      ErrorConfig[error.message] ?? ErrorConfig[ErrorType.INTERNAL_SERVER_ERROR];
+    return res.status(e.code).json({
+      message: e.message,
+    });
+  }
+};
