@@ -80,7 +80,11 @@ exports.register = async (req, res) => {
       throw error;
     }
 
-    res.status(201).json({ message: "User registered successfully" });
+    res.status(200).json({
+      status: 0,
+      message: "Registrasi berhasil silahkan login",
+      data: null,
+    });
   } catch (error) {
     const e =
       ErrorConfig[error.message] ??
@@ -105,13 +109,21 @@ exports.login = async (req, res) => {
     );
 
     if (!user) {
-      return res.status(401).json({ error: "Invalid credentials" });
+      return res.status(401).json({
+        "status": 103,
+        "message": "Username atau password salah",
+        "data": null
+      });
     }
 
     // Check password
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
-      return res.status(401).json({ error: "Invalid credentials" });
+      return res.status(401).json({
+        "status": 103,
+        "message": "Username atau password salah",
+        "data": null
+      });
     }
 
     // Generate token
@@ -124,10 +136,12 @@ exports.login = async (req, res) => {
     );
 
     res.json({
-      token,
-      user: {
-        id: user.id,
-      },
+      "status": 0,
+      "message": "Login Sukses",
+      data: {
+        token
+      }
+      
     });
   } catch (error) {
     console.error("Login error:", error);

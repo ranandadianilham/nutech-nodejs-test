@@ -164,7 +164,7 @@ exports.topup = async (req, res) => {
     );
     return res.status(200).json({
       status: 0,
-      message: "Top up Berhasil",
+      message:  "Top Up Balance berhasil",
       data,
     });
   } catch (error) {

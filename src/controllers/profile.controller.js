@@ -116,11 +116,16 @@ exports.update = async (req, res) => {
     const data = await updateProfile(id, firstName, lastName);
     res.status(201).json({
       status: 0,
-      message: "Sukses",
+      message:  "Update Pofile berhasil",
       data,
     });
   } catch (error) {
-    res.status(500).json({ message: "internal server error" });
+    const e =
+      ErrorConfig[error.message] ??
+      ErrorConfig[ErrorType.INTERNAL_SERVER_ERROR];
+    return res.status(e.code).json({
+      message: e.message,
+    });
   }
 };
 
@@ -138,7 +143,7 @@ exports.updateImage = async (req, res) => {
     const data = await updateProfileImage(id, fileUrl);
     res.status(200).json({
       status: 0,
-      message: "Sukses",
+      message: "Update Profile Image berhasil",
       data,
     });
   } catch (error) {

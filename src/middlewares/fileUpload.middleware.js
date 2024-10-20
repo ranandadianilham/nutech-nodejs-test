@@ -1,4 +1,5 @@
 const multer = require("multer");
+const { ErrorConfig, ErrorType } = require("../contants/errorContant");
 
 // middleware/fileUploadMiddleware.js
 exports.fileUploadErrorHandler = (error, req, res, next) => {
@@ -19,8 +20,9 @@ exports.fileUploadErrorHandler = (error, req, res, next) => {
 
   if (error.code === "INVALID_FILE_TYPE") {
     return res.status(400).json({
-      status: "error",
-      message: error.message,
+      "status": 102,
+      "message": "Format Image tidak sesuai",
+      "data": null
     });
   }
 

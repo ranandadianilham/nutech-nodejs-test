@@ -23,10 +23,7 @@ const verifyToken = (token) => {
   try {
     return jwt.verify(token, JWT_SECRET);
   } catch (error) {
-    if (error instanceof jwt.TokenExpiredError) {
-      throw new Error("Token Expired");
-    }
-    throw new Error("Token Invalid");
+    throw new Error(ErrorConfig[ErrorType.UNAUTHORIZED].message);
   }
 };
 
@@ -82,7 +79,12 @@ exports.authenticateToken = async (req, res, next) => {
 };
 
 exports.validateBody = (req, res, next) => {
-    const errors = validationResult(req);
+    const errors = validationResult(req).formatWith(({ msg }) => ({
+      status: 102,
+      message: msg,
+      data: null
+      // Add other custom properties here
+    }));
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }

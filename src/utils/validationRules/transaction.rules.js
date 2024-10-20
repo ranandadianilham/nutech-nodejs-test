@@ -4,9 +4,9 @@ const { validateBody } = require("../../middlewares/auth.middleware");
 const topUpAmountRules = [
   body("top_up_amount")
     .isNumeric()
-    .withMessage("Top up amount must be a number")
+    .withMessage("Paramter amount hanya boleh angka dan tidak boleh lebih kecil dari 0")
     .isFloat({ min: 0 })
-    .withMessage("Top up amount must be greater than 0"),
+    .withMessage("Paramter amount hanya boleh angka dan tidak boleh lebih kecil dari 0"),
   validateBody,
 ];
 
