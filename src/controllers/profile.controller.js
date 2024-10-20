@@ -139,7 +139,7 @@ exports.updateImage = async (req, res) => {
         message: "No file uploaded",
       });
     }
-    const fileUrl = `${req.protocol}://${req.get("host")}/${req.file.filename}`;
+    const fileUrl = `uploaded/${req.file.filename}`;
     const data = await updateProfileImage(id, fileUrl);
     res.status(200).json({
       status: 0,
@@ -147,7 +147,6 @@ exports.updateImage = async (req, res) => {
       data,
     });
   } catch (error) {
-    console.log('😂',error.message)
     const e =
       ErrorConfig[error.message] ??
       ErrorConfig[ErrorType.INTERNAL_SERVER_ERROR];
