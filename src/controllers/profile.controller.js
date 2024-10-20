@@ -147,6 +147,7 @@ exports.updateImage = async (req, res) => {
       data,
     });
   } catch (error) {
+    console.log('😂',error.message)
     const e =
       ErrorConfig[error.message] ??
       ErrorConfig[ErrorType.INTERNAL_SERVER_ERROR];

@@ -1,0 +1,433 @@
+{
+	"info": {
+		"_postman_id": "618b736e-01bc-4761-a597-33b3a7257a14",
+		"name": "nutech-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8698936"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "profile",
+					"item": [
+						{
+							"name": "profile",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://nutech-nodejs-rananda.up.railway.app/profile",
+									"protocol": "https",
+									"host": [
+										"nutech-nodejs-rananda",
+										"up",
+										"railway",
+										"app"
+									],
+									"path": [
+										"profile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"first_name\": \"User Edited1\",\r\n  \"last_name\": \"Nutech Edited2s\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://nutech-nodejs-rananda.up.railway.app/profile/update",
+									"protocol": "https",
+									"host": [
+										"nutech-nodejs-rananda",
+										"up",
+										"railway",
+										"app"
+									],
+									"path": [
+										"profile",
+										"update"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "image",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/C:/Users/rdian/Downloads/nusatech/file_example_PNG_500kB.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://nutech-nodejs-rananda.up.railway.app/profile/image",
+									"protocol": "https",
+									"host": [
+										"nutech-nodejs-rananda",
+										"up",
+										"railway",
+										"app"
+									],
+									"path": [
+										"profile",
+										"image"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Thunder Client (https://www.thunderclient.com)"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"\",\n  \"first_name\": \"User\",\n  \"last_name\": \"Nutech\",\n  \"password\": \"Rna@234zzz\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nutech-nodejs-rananda.up.railway.app/register",
+							"protocol": "https",
+							"host": [
+								"nutech-nodejs-rananda",
+								"up",
+								"railway",
+								"app"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"nandax13@mail.com\",\r\n  \"password\": \"Rna@234zzz\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nutech-nodejs-rananda.up.railway.app/login",
+							"protocol": "https",
+							"host": [
+								"nutech-nodejs-rananda",
+								"up",
+								"railway",
+								"app"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "transaction",
+			"item": [
+				{
+					"name": "Get Balance",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcyOTMxNDAzNiwiZXhwIjoxNzI5NDAwNDM2fQ.3zJjoaw4BM6P1vyEJ85J5jSvCa44_womhXvMSPvM1PY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://nutech-nodejs-rananda.up.railway.app/balance",
+							"protocol": "https",
+							"host": [
+								"nutech-nodejs-rananda",
+								"up",
+								"railway",
+								"app"
+							],
+							"path": [
+								"balance"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "topup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"top_up_amount\": 44111.0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nutech-nodejs-rananda.up.railway.app/topup",
+							"protocol": "https",
+							"host": [
+								"nutech-nodejs-rananda",
+								"up",
+								"railway",
+								"app"
+							],
+							"path": [
+								"topup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "transaction",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"service_code\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nutech-nodejs-rananda.up.railway.app/transaction",
+							"protocol": "https",
+							"host": [
+								"nutech-nodejs-rananda",
+								"up",
+								"railway",
+								"app"
+							],
+							"path": [
+								"transaction"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "transaction history",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcyOTMxNDAzNiwiZXhwIjoxNzI5NDAwNDM2fQ.3zJjoaw4BM6P1vyEJ85J5jSvCa44_womhXvMSPvM1PY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://nutech-nodejs-rananda.up.railway.app/transaction/history?offset=0&limit=8",
+							"protocol": "https",
+							"host": [
+								"nutech-nodejs-rananda",
+								"up",
+								"railway",
+								"app"
+							],
+							"path": [
+								"transaction",
+								"history"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "8"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "information",
+			"item": [
+				{
+					"name": "services",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcyOTMxNDAzNiwiZXhwIjoxNzI5NDAwNDM2fQ.3zJjoaw4BM6P1vyEJ85J5jSvCa44_womhXvMSPvM1PY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://nutech-nodejs-rananda.up.railway.app/services",
+							"protocol": "https",
+							"host": [
+								"nutech-nodejs-rananda",
+								"up",
+								"railway",
+								"app"
+							],
+							"path": [
+								"services"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "banner",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://nutech-nodejs-rananda.up.railway.app/banner",
+							"protocol": "https",
+							"host": [
+								"nutech-nodejs-rananda",
+								"up",
+								"railway",
+								"app"
+							],
+							"path": [
+								"banner"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{access_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
