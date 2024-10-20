@@ -45,7 +45,7 @@ const updateProfile = async (id, firstName, lastName) => {
   const t = await sequelize.transaction();
   try {
     await sequelize.query(
-      "UPDATE nutech.user_profile SET firstName=:firstName, lastName=:lastName, updatedAt=now() WHERE id=:id",
+      "UPDATE user_profile SET firstName=:firstName, lastName=:lastName, updatedAt=now() WHERE id=:id",
       {
         replacements: {
           id,
@@ -79,7 +79,7 @@ const updateProfileImage = async (id, profileImage) => {
   const t = await sequelize.transaction();
   try {
     await sequelize.query(
-      "UPDATE nutech.user_profile SET profileImage=:profileImage, updatedAt=now() WHERE id=:id",
+      "UPDATE user_profile SET profileImage=:profileImage, updatedAt=now() WHERE id=:id",
       {
         replacements: {
           id,
