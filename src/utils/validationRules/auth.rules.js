@@ -20,14 +20,14 @@ const userRegistrationRules = [
   ];
   
   const userLoginRules = [
-    body("email").isEmail().withMessage("Invalid email format"),
+    body("email").isEmail().withMessage("Paramter email tidak sesuai format"),
     body("password")
       .isLength({ min: 8 })
-      .withMessage("Password must be at least 8 characters")
+      .withMessage("Username atau password salah")
       .matches(/\d/)
-      .withMessage("Password must contain at least one number")
+      .withMessage("Username atau password salah")
       .matches(/[A-Z]/)
-      .withMessage("Password must contain at least one uppercase letter"),
+      .withMessage("Username atau password salah"),
     validateBody,
   ];
 
